@@ -32,7 +32,7 @@
   });
 
   // Close the mobile menu if the window grows past the mobile breakpoint.
-  var desktop = window.matchMedia('(min-width: 981px)');
+  var desktop = window.matchMedia('(min-width: 1101px)');
   desktop.addEventListener('change', function (e) { if (e.matches) setMenu(false); });
 
   /* ---------- Condensed header on scroll ---------- */
@@ -65,6 +65,44 @@
       });
     }, { rootMargin: '-45% 0px -50% 0px' });
     sections.forEach(function (s) { sectionObserver.observe(s); });
+  }
+
+  /* ---------- Schedule: archive games already played, mark the next one ---------- */
+
+  var gameList = document.getElementById('gameList');
+  var earlier = document.getElementById('gamesEarlier');
+  if (gameList && earlier) {
+    var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
+                  'August', 'September', 'October', 'November', 'December'];
+    var now = new Date();
+    var today = now.getFullYear() * 10000 + (now.getMonth() + 1) * 100 + now.getDate();
+    var played = [];
+    var next = null;
+
+    Array.prototype.forEach.call(gameList.querySelectorAll('.game[data-date]'), function (row) {
+      var parts = row.getAttribute('data-date').split('-').map(Number);
+      var stamp = parts[0] * 10000 + parts[1] * 100 + parts[2];
+      if (stamp < today) {
+        row.hidden = true;
+        played.push(MONTHS[parts[1] - 1] + ' ' + parts[2] + ' vs. ' + row.querySelector('h3').textContent);
+      } else if (!next) {
+        next = row;
+      }
+    });
+
+    if (!next) gameList.hidden = true; // season over: only the "earlier" line remains
+    if (next) {
+      next.classList.add('is-next');
+      var label = document.createElement('span');
+      label.className = 'game-next';
+      label.textContent = 'Next home game';
+      next.querySelector('.game-info').prepend(label);
+    }
+    if (played.length) {
+      earlier.innerHTML = '<strong>Earlier this season:</strong> ';
+      earlier.appendChild(document.createTextNode(played.join(' · ')));
+      earlier.hidden = false;
+    }
   }
 
   /* ---------- Gentle fade-in as sections enter ---------- */
