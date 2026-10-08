@@ -1,0 +1,3 @@
+# Preview build: keep out of search results until the club approves launch.
+User-agent: *
+Disallow: /
