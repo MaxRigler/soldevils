@@ -13,14 +13,23 @@
 <meta property="og:description" content="An independent booster organization supporting Arizona State student-athletes since 1999.">
 <meta name="twitter:card" content="summary">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap">
+<!-- Fonts are self-hosted (assets/fonts). The five needed for the first screen are preloaded. -->
+<link rel="preload" href="assets/fonts/newsreader-display-360.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/newsreader-display-360-italic.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/newsreader-text-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/instrument-sans-600.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/sol-devils-engraved.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/css/styles.css">
 <script>
+  // "js" lets the phone menu start closed with no flash. If main.js never runs (blocked or failed),
+  // the class is removed as soon as the page is parsed (a deferred script has always run by then), and
+  // the links show as a plain row instead of a dead Menu button, without waiting for any photograph.
   document.documentElement.classList.add('js');
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!document.documentElement.classList.contains('js-menu')) document.documentElement.classList.remove('js');
+  });
   // Remote images: try a fallback source once; otherwise hide the image and flag its parent
-  // so a text fallback (logos) or the panel's background (photos) shows instead of a broken icon.
+  // so a text fallback (logos) or a designed panel (photos) shows instead of a broken icon.
   document.addEventListener('error', function (e) {
     var img = e.target;
     if (img.tagName !== 'IMG') return;
@@ -34,100 +43,149 @@
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 
-<div class="utility">
+<!-- Ornaments, drawn once and reused. Decorative only. -->
+<svg class="svg-defs" aria-hidden="true" focusable="false" width="0" height="0">
+  <defs>
+    <!-- the small engraved sun: used for the next home game marker -->
+    <symbol id="sun" viewBox="-24 -24 48 48">
+      <circle r="5.2" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <path fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" d="M9 0L21 0M8.7 2.3L14.5 3.9M7.8 4.5L18.2 10.5M6.4 6.4L10.6 10.6M4.5 7.8L10.5 18.2M2.3 8.7L3.9 14.5M0 9L0 21M-2.3 8.7L-3.9 14.5M-4.5 7.8L-10.5 18.2M-6.4 6.4L-10.6 10.6M-7.8 4.5L-18.2 10.5M-8.7 2.3L-14.5 3.9M-9 0L-21 0M-8.7 -2.3L-14.5 -3.9M-7.8 -4.5L-18.2 -10.5M-6.4 -6.4L-10.6 -10.6M-4.5 -7.8L-10.5 -18.2M-2.3 -8.7L-3.9 -14.5M0 -9L0 -21M2.3 -8.7L3.9 -14.5M4.5 -7.8L10.5 -18.2M6.4 -6.4L10.6 -10.6M7.8 -4.5L18.2 -10.5M8.7 -2.3L14.5 -3.9"/>
+    </symbol>
+    <!-- engraved rays of a sun sitting on the horizon (the hero sunrise and the footer sunset) -->
+    <symbol id="rays" viewBox="-1080 -1080 2160 1080">
+      <path fill="none" stroke="currentColor" stroke-width="1" vector-effect="non-scaling-stroke" stroke-linecap="round" d="M-540 0L-1106 0M-539.5 -23.6L-776.4 -33.9M-537.9 -47.1L-917.9 -80.3M-535.4 -70.5L-766.3 -100.9M-531.8 -93.8L-1069.2 -188.5M-527.2 -116.9L-746.4 -165.5M-521.6 -139.8L-863.9 -231.5M-515 -162.4L-717.6 -226.2M-507.4 -184.7L-966.2 -351.7M-498.9 -206.6L-680.9 -282M-489.4 -228.2L-765.7 -357M-479 -249.3L-637.7 -332M-467.7 -270L-816.6 -471.4M-455.4 -290.1L-589.6 -375.6M-442.3 -309.7L-639.5 -447.8M-428.4 -328.7L-537.9 -412.8M-413.7 -347.1L-646 -542.1M-398.1 -364.8L-484.2 -443.7M-381.8 -381.8L-503.5 -503.5M-364.8 -398.1L-429.7 -468.9M-347.1 -413.7L-478.8 -570.6M-328.7 -428.4L-375.3 -489.1M-309.7 -442.3L-372.3 -531.8M-290.1 -455.4L-321.8 -505.1M-270 -467.7L-330.7 -572.8M-249.3 -479L-269.6 -517.8M-228.2 -489.4L-253.7 -544.1M-206.6 -498.9L-218.7 -528M-184.7 -507.4L-206.2 -566.6M-162.4 -515L-169 -536.1M-139.8 -521.6L-147.6 -550.8M-116.9 -527.2L-120.3 -542.7M-93.8 -531.8L-99.5 -564.1M-70.5 -535.4L-72.3 -549.3M-47.1 -537.9L-48.7 -556.4M-23.6 -539.5L-24.2 -553.5M0 -540L0 -566M23.6 -539.5L24.2 -553.5M47.1 -537.9L48.7 -556.4M70.5 -535.4L72.3 -549.3M93.8 -531.8L99.5 -564.1M116.9 -527.2L120.3 -542.7M139.8 -521.6L147.6 -550.8M162.4 -515L169 -536.1M184.7 -507.4L206.2 -566.6M206.6 -498.9L218.7 -528M228.2 -489.4L253.7 -544.1M249.3 -479L269.6 -517.8M270 -467.7L330.7 -572.8M290.1 -455.4L321.8 -505.1M309.7 -442.3L372.3 -531.8M328.7 -428.4L375.3 -489.1M347.1 -413.7L478.8 -570.6M364.8 -398.1L429.7 -468.9M381.8 -381.8L503.5 -503.5M398.1 -364.8L484.2 -443.7M413.7 -347.1L646 -542.1M428.4 -328.7L537.9 -412.8M442.3 -309.7L639.5 -447.8M455.4 -290.1L589.6 -375.6M467.7 -270L816.6 -471.4M479 -249.3L637.7 -332M489.4 -228.2L765.7 -357M498.9 -206.6L680.9 -282M507.4 -184.7L966.2 -351.7M515 -162.4L717.6 -226.2M521.6 -139.8L863.9 -231.5M527.2 -116.9L746.4 -165.5M531.8 -93.8L1069.2 -188.5M535.4 -70.5L766.3 -100.9M537.9 -47.1L917.9 -80.3M539.5 -23.6L776.4 -33.9M540 0L1106 0"/>
+    </symbol>
+    <!-- the club seal on the membership invitation -->
+    <symbol id="seal" viewBox="0 0 240 240">
+      <circle cx="120" cy="120" r="117" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <circle cx="120" cy="120" r="112" fill="none" stroke="currentColor" stroke-width=".7"/>
+      <path id="sealRing" fill="none" d="M120 120m-91 0a91 91 0 1 1 182 0a91 91 0 1 1-182 0"/>
+      <text font-family="Sol Devils Engraved, Georgia, serif" font-size="13.4" fill="currentColor"><textPath href="#sealRing" textLength="566" lengthAdjust="spacing">THE SOL DEVILS • TEMPE · ARIZONA • ESTABLISHED 1999 •</textPath></text>
+      <circle cx="120" cy="120" r="80" fill="none" stroke="currentColor" stroke-width=".7"/>
+      <circle cx="120" cy="120" r="76" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <path fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" d="M146 120L186 120M145.8 123.4L173.5 127M145.1 126.7L183.8 137.1M144 129.9L169.9 140.7M142.5 133L177.2 153M140.6 135.8L162.8 152.9M138.4 138.4L166.7 166.7M135.8 140.6L152.9 162.8M133 142.5L153 177.2M129.9 144L140.7 169.9M126.7 145.1L137.1 183.8M123.4 145.8L127 173.5M120 146L120 186M116.6 145.8L113 173.5M113.3 145.1L102.9 183.8M110.1 144L99.3 169.9M107 142.5L87 177.2M104.2 140.6L87.1 162.8M101.6 138.4L73.3 166.7M99.4 135.8L77.2 152.9M97.5 133L62.8 153M96 129.9L70.1 140.7M94.9 126.7L56.2 137.1M94.2 123.4L66.5 127M94 120L54 120M94.2 116.6L66.5 113M94.9 113.3L56.2 102.9M96 110.1L70.1 99.3M97.5 107L62.8 87M99.4 104.2L77.2 87.1M101.6 101.6L73.3 73.3M104.2 99.4L87.1 77.2M107 97.5L87 62.8M110.1 96L99.3 70.1M113.3 94.9L102.9 56.2M116.6 94.2L113 66.5M120 94L120 54M123.4 94.2L127 66.5M126.7 94.9L137.1 56.2M129.9 96L140.7 70.1M133 97.5L153 62.8M135.8 99.4L152.9 77.2M138.4 101.6L166.7 73.3M140.6 104.2L162.8 87.1M142.5 107L177.2 87M144 110.1L169.9 99.3M145.1 113.3L183.8 102.9M145.8 116.6L173.5 113"/>
+      <circle cx="120" cy="120" r="19" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <circle cx="120" cy="120" r="14.5" fill="none" stroke="currentColor" stroke-width=".7"/>
+    </symbol>
+    <!-- small padlock for Member Login -->
+    <symbol id="lock" viewBox="0 0 16 16">
+      <rect x="2.75" y="7" width="10.5" height="7.5" rx="1.3" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <path d="M5.1 7V5.1a2.9 2.9 0 0 1 5.8 0V7" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    </symbol>
+  </defs>
+</svg>
+
+<aside class="utility" aria-label="Club information">
   <div class="container utility-inner">
     <span>Independent supporters of <span class="u-long">Arizona State University</span><span class="u-short">ASU</span> Athletics since 1999</span>
     <span class="utility-place">Tempe, Arizona</span>
   </div>
-</div>
+</aside>
 <div class="header-sentinel" aria-hidden="true"></div>
 
 <header class="header" id="header">
-  <div class="container header-inner">
-    <a class="logo" href="#top" aria-label="The Sol Devils, back to top">
-      <img class="club-logo" src="https://static1.squarespace.com/static/5940823c3e00befac5d27ede/t/5941811115d5dbdae70b376a/1497465109578/SolDevilTransparent.png?format=1500w" alt="The Sol Devils" referrerpolicy="no-referrer">
-      <span class="logo-fallback" aria-hidden="true">The Sol Devils</span>
-    </a>
+  <div class="header-bar">
+    <div class="container header-inner">
+      <a class="logo" href="#top" aria-label="The Sol Devils, back to top">
+        <img class="club-logo" src="https://static1.squarespace.com/static/5940823c3e00befac5d27ede/t/5941811115d5dbdae70b376a/1497465109578/SolDevilTransparent.png?format=1500w" alt="The Sol Devils" referrerpolicy="no-referrer">
+        <span class="logo-fallback" aria-hidden="true">The Sol Devils</span>
+      </a>
 
-    <button class="menu-btn" id="menuBtn" type="button" aria-controls="siteNav" aria-expanded="false">
-      <span class="menu-icon" aria-hidden="true"><span></span></span>
-      <span class="menu-label">Menu</span>
-    </button>
+      <!-- Below 1024px Member Login stays in the bar, beside the Menu button (shown only at those widths). -->
+      <a class="login login-bar" href="https://thesoldevils.wildapricot.org/" target="_blank" rel="noopener noreferrer"><svg class="icon-lock" aria-hidden="true" focusable="false"><use href="#lock"/></svg><span><span class="login-member">Member </span>Login</span><span class="sr-only"> (opens in a new tab)</span></a>
 
-    <nav class="nav" id="siteNav" aria-label="Main">
-      <a href="#about">About</a>
-      <a href="#schedule">2026 Schedule</a>
-      <a href="#tailgate">Tailgate</a>
-      <a href="#impact">Our Impact</a>
-      <a href="#membership">Membership</a>
-      <a class="login" href="https://thesoldevils.wildapricot.org/" target="_blank" rel="noopener noreferrer">Member Login<span class="sr-only"> (opens in a new tab)</span></a>
-    </nav>
+      <!-- Below 1024px the links move into a full-width sheet opened by this button. Its "Menu"/"Close" word always shows. -->
+      <button class="menu-btn" id="menuBtn" type="button" aria-controls="siteNav" aria-expanded="false">
+        <span class="menu-icon" aria-hidden="true"><span></span></span>
+        <span class="menu-label">Menu</span>
+      </button>
+
+      <!-- Desktop: the two groups sit either side of the centred crest. -->
+      <nav class="nav" id="siteNav" aria-label="Main">
+        <div class="nav-group nav-left">
+          <a href="#about">About</a>
+          <a href="#schedule">2026 Schedule</a>
+          <a href="#tailgate">Tailgate</a>
+        </div>
+        <div class="nav-group nav-right">
+          <a href="#impact">Our Impact</a>
+          <a href="#membership">Membership</a>
+          <a class="login" href="https://thesoldevils.wildapricot.org/" target="_blank" rel="noopener noreferrer"><svg class="icon-lock" aria-hidden="true" focusable="false"><use href="#lock"/></svg>Member Login<span class="sr-only"> (opens in a new tab)</span></a>
+        </div>
+      </nav>
+    </div>
   </div>
+  <div class="menu-scrim" id="menuScrim" aria-hidden="true"></div>
 </header>
 
 <main id="main">
+  <!-- ============ Hero: the sunrise ============ -->
   <section class="hero" id="top" aria-labelledby="hero-title">
-    <div class="hero-copy">
-      <p class="eyebrow">Established 1999 · Tempe, Arizona</p>
-      <h1 id="hero-title">A tradition of supporting Sun&nbsp;Devil Athletics</h1>
-      <p class="hero-lead">A close-knit group of committed ASU supporters, united by a love for Sun Devil Athletics and a desire to make a meaningful difference for student-athletes.</p>
+    <div class="container hero-copy">
+      <p class="eyebrow"><span>Established 1999</span><span class="sep"> · </span><span>Tempe, Arizona</span></p>
+      <h1 id="hero-title">A tradition of supporting <span class="accent">Sun&nbsp;Devil Athletics</span></h1>
+      <p class="hero-lead">A close-knit group of committed ASU supporters, united by a love for <span class="nowrap">Sun Devil Athletics</span> and a desire to make a meaningful difference for <span class="nowrap">student-athletes</span>.</p>
       <div class="actions">
-        <a class="btn btn-primary" href="#schedule">View the 2026 Schedule</a>
+        <a class="btn btn-primary btn-down" href="#schedule">View the 2026 Schedule</a>
       </div>
     </div>
     <figure class="hero-photo">
-      <img src="https://sundevils.com/sites/default/files/2025-12/_AG18905.JPG"
-           data-fallback="https://news.asu.edu/sites/default/files/styles/full_body_width/public/2024-06/20230923_asuvsuscfootballgame_836.jpg?itok=LEWQKV85"
-           alt="A packed Mountain America Stadium during an Arizona State football game at sunset"
-           fetchpriority="high" referrerpolicy="no-referrer">
+      <svg class="hero-rays" aria-hidden="true" focusable="false"><use href="#rays"/></svg>
+      <div class="arch">
+        <img src="https://sundevils.com/sites/default/files/2025-12/_AG18905.JPG"
+             data-fallback="https://news.asu.edu/sites/default/files/styles/full_body_width/public/2024-06/20230923_asuvsuscfootballgame_836.jpg?itok=LEWQKV85"
+             alt="A packed Mountain America Stadium during an Arizona State football game at sunset"
+             fetchpriority="high" referrerpolicy="no-referrer">
+      </div>
       <figcaption>Mountain America Stadium · Tempe</figcaption>
     </figure>
   </section>
 
+  <!-- The maroon horizon the arch rises from; a gold thread drops from the arch into the mission line. -->
   <div class="mission">
     <div class="container mission-inner">
-      <p>Our mission is simple: support ASU student-athletes and bring Sun Devil fans together for an outstanding game-day tradition.</p>
-      <span class="since">Proudly Sun Devils<br>since 1999</span>
+      <p>Our mission is simple: support ASU <span class="nowrap">student-athletes</span> and bring Sun&nbsp;Devil fans together for an outstanding <span class="nowrap">game-day</span> tradition.</p>
+      <span class="since">Proudly Sun Devils since 1999</span>
     </div>
   </div>
 
   <!-- ============ About ============ -->
-  <section class="section" id="about" aria-labelledby="about-title">
+  <section class="section section-paper about" id="about" aria-labelledby="about-title">
     <div class="container">
       <div class="about-grid">
         <div class="about-copy reveal">
-          <p class="kicker">Who We Are</p>
-          <h2 class="section-heading" id="about-title">More than a tailgate.<br> A shared commitment to ASU.</h2>
-          <p>The Sol Devils began in 1999 with ten football fans tailgating around a few hibachis. What started as a small gathering of friends has grown into one of Arizona State’s established independent athletics booster organizations.</p>
+          <p class="kicker kicker-rule">Who We Are</p>
+          <h2 class="section-heading" id="about-title">More than a tailgate.<br> <span class="accent">A shared commitment to&nbsp;ASU.</span></h2>
+          <p class="dropcap"><span class="lead-in">The Sol Devils</span> began in 1999 with ten football fans tailgating around a few hibachis. What started as a small gathering of friends has grown into one of Arizona State’s established independent athletics booster organizations.</p>
           <p>Our members are dedicated supporters of ASU Athletics. We take pride in the friendships we’ve built, the traditions we maintain, and the tangible support we provide for Sun Devil student-athletes.</p>
-          <aside class="nil" aria-labelledby="nil-title">
-            <h3 id="nil-title">Supporting Sun Devils in the NIL era</h3>
-            <p>As college athletics evolve, so does our commitment. The Sol Devils proudly support the Sun Angel Collective, which helps ASU student-athletes pursue name, image and likeness (NIL) opportunities.</p>
-          </aside>
+          <div class="nil">
+            <h3 id="nil-title">Supporting Sun&nbsp;Devils in the NIL era</h3>
+            <p>As college athletics evolve, so does our commitment. The Sol Devils proudly support the Sun Angel Collective, which helps ASU <span class="nowrap">student-athletes</span> pursue name, image and likeness (NIL) opportunities.</p>
+          </div>
         </div>
         <figure class="story-photo reveal">
-          <div class="story-frame">
+          <div class="story-frame photo-panel">
             <img src="https://news.asu.edu/sites/default/files/170830_tillman_statue_unveiling-18.jpg"
                  alt="Bronze statue of Pat Tillman, No. 42, with Arizona State stadium signage in the background"
                  loading="lazy" referrerpolicy="no-referrer">
           </div>
-          <figcaption>Honoring Sun Devil tradition: the Pat Tillman statue at Mountain America Stadium. Photo: ASU&nbsp;News.</figcaption>
+          <figcaption><span>Honoring Sun Devil tradition: the Pat Tillman statue at Mountain America Stadium. <span class="credit">Photo:&nbsp;ASU&nbsp;News.</span></span></figcaption>
         </figure>
       </div>
 
-      <ol class="values reveal" aria-label="What the club stands for">
+      <ol class="values reveal" role="list" aria-label="What the club stands for">
         <li>
-          <span class="value-num" aria-hidden="true">01</span>
+          <span class="value-num" aria-hidden="true">i.</span>
           <h3>Supporting athletics</h3>
           <p>Coming together to help meet important needs across ASU Athletics.</p>
         </li>
         <li>
-          <span class="value-num" aria-hidden="true">02</span>
+          <span class="value-num" aria-hidden="true">ii.</span>
           <h3>Building friendships</h3>
-          <p>A group of loyal Sun Devils who enjoy spending time together.</p>
+          <p>A group of loyal Sun&nbsp;Devils who enjoy spending time together.</p>
         </li>
         <li>
-          <span class="value-num" aria-hidden="true">03</span>
+          <span class="value-num" aria-hidden="true">iii.</span>
           <h3>Carrying on tradition</h3>
           <p>Hosting memorable football Saturdays in Tempe for members and guests.</p>
         </li>
@@ -140,107 +198,121 @@
        move games that have already been played into the "Earlier this season" line automatically. -->
   <section class="section schedule-section" id="schedule" aria-labelledby="schedule-title">
     <div class="container">
-      <div class="section-intro reveal">
-        <p class="kicker">Football Season 2026</p>
-        <h2 class="section-heading" id="schedule-title">Upcoming home games &amp; tailgates</h2>
-        <p class="section-description">Join fellow Sol Devils for another season of Arizona State football in Tempe. Below are the remaining home dates on ASU’s 2026 schedule.</p>
+      <div class="intro-split reveal">
+        <div class="intro-head">
+          <p class="kicker kicker-rule">Football Season 2026</p>
+          <h2 class="section-heading" id="schedule-title"><span data-season-over="2026 home games">Upcoming<br class="br-wide"> <span class="nowrap">home games</span></span> <span class="accent">&amp;&nbsp;tailgates</span></h2>
+        </div>
+        <p class="section-description">Join fellow Sol Devils for another season of Arizona State football in Tempe. <span class="in-season">Below are the remaining home dates on ASU’s 2026&nbsp;schedule.</span></p>
       </div>
 
       <div class="schedule-grid">
-        <div class="reveal">
-          <ol class="games" id="gameList" aria-label="ASU 2026 home football games">
-            <li class="game" data-date="2026-09-05">
-              <p class="game-date"><span class="game-month">Sep</span> <span class="game-day">5</span></p>
-              <div class="game-info"><h3>Morgan State</h3><p>Home opener</p></div>
-              <p class="game-time">Final</p>
-            </li>
-            <li class="game" data-date="2026-10-03">
-              <p class="game-date"><span class="game-month">Oct</span> <span class="game-day">3</span></p>
-              <div class="game-info"><h3>Baylor</h3><p>Maroon Monsoon</p></div>
-              <p class="game-time">Final</p>
-            </li>
-            <li class="game" data-date="2026-10-10">
-              <p class="game-date"><span class="game-month">Oct</span> <span class="game-day">10</span></p>
-              <div class="game-info"><h3>Hawai‘i</h3><p>Hall of Fame Game · Wear gold</p></div>
-              <p class="game-time">7:30 PM</p>
-            </li>
-            <li class="game" data-date="2026-10-24">
-              <p class="game-date"><span class="game-month">Oct</span> <span class="game-day">24</span></p>
-              <div class="game-info"><h3>Kansas State</h3><p>Blackout Game</p></div>
-              <p class="game-time">Time TBA</p>
-            </li>
-            <li class="game" data-date="2026-11-07">
-              <p class="game-date"><span class="game-month">Nov</span> <span class="game-day">7</span></p>
-              <div class="game-info"><h3>Colorado</h3><p>Salute to Service · Family Weekend</p></div>
-              <p class="game-time">Time TBA</p>
-            </li>
-            <li class="game" data-date="2026-11-21">
-              <p class="game-date"><span class="game-month">Nov</span> <span class="game-day">21</span></p>
-              <div class="game-info"><h3>Oklahoma State</h3><p>Homecoming · Senior Game</p></div>
-              <p class="game-time">Time TBA</p>
-            </li>
-          </ol>
-          <p class="games-earlier" id="gamesEarlier" hidden></p>
-          <p class="games-note">All dates and kickoff times are Arizona time and subject to change by ASU. <a href="https://thesundevils.com/sports/football/schedule?type=home" target="_blank" rel="noopener noreferrer">Official ASU football schedule<span class="sr-only"> (opens in a new tab)</span></a></p>
+        <div class="fixture reveal">
+          <div class="fixture-card" id="fixtureCard">
+            <p class="fixture-head" aria-hidden="true">
+              <span>Sun Devil Football</span>
+              <span class="fixture-head-mark"></span>
+              <span>Home Games · 2026</span>
+            </p>
+            <ol class="games" id="gameList" role="list" aria-label="ASU 2026 home football games">
+              <li class="game" data-date="2026-09-05">
+                <p class="game-date"><span class="game-month">Sep</span> <span class="game-day">5</span></p>
+                <div class="game-info"><h3>Morgan State</h3><p>Home opener</p></div>
+                <p class="game-time">Final</p>
+              </li>
+              <li class="game" data-date="2026-10-03">
+                <p class="game-date"><span class="game-month">Oct</span> <span class="game-day">3</span></p>
+                <div class="game-info"><h3>Baylor</h3><p>Maroon Monsoon</p></div>
+                <p class="game-time">Final</p>
+              </li>
+              <li class="game" data-date="2026-10-10">
+                <p class="game-date"><span class="game-month">Oct</span> <span class="game-day">10</span></p>
+                <div class="game-info"><h3>Hawai‘i</h3><p>Hall of Fame Game · Wear gold</p></div>
+                <p class="game-time">7:30 PM</p>
+              </li>
+              <li class="game" data-date="2026-10-24">
+                <p class="game-date"><span class="game-month">Oct</span> <span class="game-day">24</span></p>
+                <div class="game-info"><h3>Kansas State</h3><p>Blackout Game</p></div>
+                <p class="game-time">Time TBA</p>
+              </li>
+              <li class="game" data-date="2026-11-07">
+                <p class="game-date"><span class="game-month">Nov</span> <span class="game-day">7</span></p>
+                <div class="game-info"><h3>Colorado</h3><p>Salute to Service · Family Weekend</p></div>
+                <p class="game-time">Time TBA</p>
+              </li>
+              <li class="game" data-date="2026-11-21">
+                <p class="game-date"><span class="game-month">Nov</span> <span class="game-day">21</span></p>
+                <div class="game-info"><h3>Oklahoma State</h3><p>Homecoming · Senior Game</p></div>
+                <p class="game-time">Time TBA</p>
+              </li>
+            </ol>
+            <div class="games-earlier" id="gamesEarlier" hidden></div>
+            <p class="games-note">All dates and kickoff times are Arizona time and subject to change by&nbsp;ASU. <a href="https://thesundevils.com/sports/football/schedule?type=home" target="_blank" rel="noopener noreferrer">Official ASU football schedule<span class="sr-only"> (opens in a new tab)</span></a></p>
+          </div>
         </div>
 
-        <aside class="catering reveal" aria-labelledby="catering-title">
+        <div class="catering reveal">
           <div class="catering-body">
             <p class="kicker">Our 2026 Catering Partner</p>
             <h3 id="catering-title">Great food is part of the tradition</h3>
-            <p>We’re pleased to have <strong>Frasher’s Smokehouse</strong> catering our game-day tailgate food throughout the 2026 season.</p>
+            <p>We’re pleased to have <strong>Frasher’s Smokehouse</strong> catering our <span class="nowrap">game-day</span> tailgate food throughout the 2026 season.</p>
           </div>
           <a class="caterer-mark" href="https://frasherssmokehouse.com/" target="_blank" rel="noopener noreferrer">
             <img src="https://frasherssmokehouse.com/wp-content/uploads/2026/07/frashers-logo-smokehouse_-1.png" alt="Frasher’s Smokehouse (opens in a new tab)" loading="lazy" referrerpolicy="no-referrer">
-            <span class="caterer-fallback" aria-hidden="true">Frasher’s<br>Smokehouse</span>
+            <span class="caterer-fallback">Frasher’s<br>Smokehouse<span class="sr-only"> (opens in a new tab)</span></span>
           </a>
-        </aside>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ============ Tailgate ============ -->
-  <section class="section" id="tailgate" aria-labelledby="tailgate-title">
+  <!-- ============ Tailgate: evening, candle-lit ============ -->
+  <section class="section tailgate on-dark" id="tailgate" aria-labelledby="tailgate-title">
     <div class="container tailgate-grid">
-      <div class="tailgate-photo reveal">
+      <div class="tailgate-photo photo-panel reveal">
         <img src="https://images.squarespace-cdn.com/content/v1/5940823c3e00befac5d27ede/1497475192054-2JOFE752RRUANABXSHT9/vlcsnap-2015-03-23-18h21m57s186.png"
              alt="A live band performing for Sun Devil fans at the Sol Devils tailgate"
              loading="lazy" referrerpolicy="no-referrer">
       </div>
       <div class="tailgate-copy reveal">
-        <p class="kicker">Game Day</p>
-        <h2 class="section-heading" id="tailgate-title">The Sol Devils Tailgate</h2>
+        <p class="kicker kicker-rule">Game Day</p>
+        <h2 class="section-heading" id="tailgate-title">The Sol&nbsp;Devils <span class="accent">Tailgate</span></h2>
         <p>A football Saturday tradition and one of the club’s most recognizable activities. Members, invited guests, and sponsors gather outside the southwest entrance of Mountain America Stadium for food, drinks, music, and good company before kickoff.</p>
-        <dl class="details">
-          <div><dt>Location</dt><dd>Southwest stadium entrance</dd></div>
-          <div><dt>When</dt><dd>Three hours before kickoff</dd></div>
-          <div><dt>Admission</dt><dd>Members and invited guests</dd></div>
-          <div><dt>What to expect</dt><dd>Music, food, bar &amp; televisions</dd></div>
-        </dl>
       </div>
+      <!-- The fact file: under the copy on wide screens, a four-up row under both columns on laptops -->
+      <dl class="details reveal">
+        <div><dt>Location</dt><dd>Southwest stadium entrance</dd></div>
+        <div><dt>When</dt><dd>Three hours before kickoff</dd></div>
+        <div><dt>Admission</dt><dd>Members and invited guests</dd></div>
+        <div><dt>What to expect</dt><dd>Music, food, bar &amp; televisions</dd></div>
+      </dl>
     </div>
   </section>
 
   <!-- ============ Our Impact ============ -->
-  <section class="section section-ivory" id="impact" aria-labelledby="impact-title">
+  <section class="section section-paper impact-section" id="impact" aria-labelledby="impact-title">
     <div class="container">
-      <div class="section-intro reveal">
-        <p class="kicker">What We Support</p>
-        <h2 class="section-heading" id="impact-title">Investing in Sun Devil Football</h2>
-        <p class="section-description">The Sol Devils help fund meaningful improvements to football facilities, equipment, and the student-athlete experience. These are a few of the projects our members have helped make possible.</p>
+      <div class="intro-split reveal">
+        <div class="intro-head">
+          <p class="kicker kicker-rule">What We Support</p>
+          <h2 class="section-heading" id="impact-title">Investing in <span class="accent">Sun&nbsp;Devil Football</span></h2>
+        </div>
+        <p class="section-description">The Sol Devils help fund meaningful improvements to football facilities, equipment, and the <span class="nowrap">student-athlete</span> experience. These are a few of the projects our members have helped make possible.</p>
       </div>
 
       <article class="feature reveal" aria-labelledby="feature-title">
         <figure class="feature-photo">
-          <img src="https://cdn.prod.website-files.com/666a0977493ca8fd361d3596/666a0977493ca8fd361d3f2f_017_3270_N48_medium.avif"
-               alt="Sol Devil Field at Camp Tontozona, a green practice field surrounded by tall pine trees"
-               loading="lazy" referrerpolicy="no-referrer">
-          <figcaption>Camp Tontozona · Photo: Olsson</figcaption>
+          <div class="feature-frame photo-panel">
+            <img src="https://cdn.prod.website-files.com/666a0977493ca8fd361d3596/666a0977493ca8fd361d3f2f_017_3270_N48_medium.avif"
+                 alt="Sol Devil Field at Camp Tontozona, a green practice field surrounded by tall pine trees"
+                 loading="lazy" referrerpolicy="no-referrer">
+          </div>
+          <figcaption>Camp Tontozona<span class="credit"> · Photo: Olsson</span></figcaption>
         </figure>
         <div class="feature-story">
           <p class="kicker">Featured Project</p>
           <h3 id="feature-title">Sol Devil Field at Camp Tontozona</h3>
-          <p>Our members raised the funds for a new artificial-turf practice field, helping preserve ASU football’s beloved Camp Tontozona tradition and provide safer, more reliable playing conditions.</p>
+          <p>Our members raised the funds for a new <span class="nowrap">artificial-turf</span> practice field, helping preserve ASU football’s beloved Camp Tontozona tradition and provide safer, more reliable playing conditions.</p>
         </div>
       </article>
 
@@ -268,76 +340,88 @@
   <section class="section gallery-section" id="photos" aria-labelledby="photos-title">
     <div class="container">
       <div class="gallery-head reveal">
-        <div>
-          <p class="kicker">Club Memories</p>
-          <h2 class="section-heading" id="photos-title">A look back at the tradition</h2>
-        </div>
+        <p class="kicker">Club Memories</p>
+        <h2 class="section-heading" id="photos-title">A look back at <span class="accent">the tradition</span></h2>
         <a class="text-link" href="https://www.thesoldevils.org/photos" target="_blank" rel="noopener noreferrer">See the photo gallery<span class="sr-only"> (opens in a new tab)</span></a>
       </div>
       <div class="gallery reveal">
-        <div class="gallery-item"><img src="https://images.squarespace-cdn.com/content/v1/5940823c3e00befac5d27ede/1497475232038-CF7CIH9EV0DZOKDQR6MK/vlcsnap-2015-03-23-18h24m13s5.png" alt="Crowd gathered at the Sol Devils tailgate" loading="lazy" referrerpolicy="no-referrer"></div>
-        <div class="gallery-item"><img src="https://images.squarespace-cdn.com/content/v1/5940823c3e00befac5d27ede/1570905415958-WTE9YDR8H453KPQSFHLZ/image-asset.jpeg" alt="Sol Devils members on stage" loading="lazy" referrerpolicy="no-referrer"></div>
-        <div class="gallery-item"><img src="https://images.squarespace-cdn.com/content/v1/5940823c3e00befac5d27ede/1497475192054-2JOFE752RRUANABXSHT9/vlcsnap-2015-03-23-18h21m57s186.png" alt="Music at a Sol Devils tailgate" loading="lazy" referrerpolicy="no-referrer"></div>
-        <div class="gallery-item"><img src="https://images.squarespace-cdn.com/content/v1/5940823c3e00befac5d27ede/1497475191031-YG7UKFD0G1UK02L0RUDJ/vlcsnap-2015-03-23-18h21m31s178.png" alt="Guests gathered at a Sol Devils tailgate" loading="lazy" referrerpolicy="no-referrer"></div>
+        <div class="gallery-item photo-panel"><img src="https://images.squarespace-cdn.com/content/v1/5940823c3e00befac5d27ede/1497475232038-CF7CIH9EV0DZOKDQR6MK/vlcsnap-2015-03-23-18h24m13s5.png" alt="Crowd gathered at the Sol Devils tailgate" loading="lazy" referrerpolicy="no-referrer"></div>
+        <div class="gallery-item photo-panel"><img src="https://images.squarespace-cdn.com/content/v1/5940823c3e00befac5d27ede/1570905415958-WTE9YDR8H453KPQSFHLZ/image-asset.jpeg" alt="Sol Devils members on stage" loading="lazy" referrerpolicy="no-referrer"></div>
+        <div class="gallery-item photo-panel"><img src="https://images.squarespace-cdn.com/content/v1/5940823c3e00befac5d27ede/1497475192054-2JOFE752RRUANABXSHT9/vlcsnap-2015-03-23-18h21m57s186.png" alt="Music at a Sol Devils tailgate" loading="lazy" referrerpolicy="no-referrer"></div>
+        <div class="gallery-item photo-panel"><img src="https://images.squarespace-cdn.com/content/v1/5940823c3e00befac5d27ede/1497475191031-YG7UKFD0G1UK02L0RUDJ/vlcsnap-2015-03-23-18h21m31s178.png" alt="Guests gathered at a Sol Devils tailgate" loading="lazy" referrerpolicy="no-referrer"></div>
       </div>
     </div>
   </section>
 
   <!-- ============ Sponsorship ============ -->
-  <section class="sponsorship" id="sponsorship" aria-labelledby="sponsorship-title">
+  <section class="sponsorship section-paper" id="sponsorship" aria-labelledby="sponsorship-title">
     <div class="container">
       <div class="sponsor-card reveal">
-        <div>
+        <div class="sponsor-head">
           <p class="kicker">Sponsorship</p>
-          <h2 id="sponsorship-title">Partner with the Sol Devils</h2>
-          <p>Learn about sponsorship opportunities that support our tailgate tradition and club activities.</p>
+          <h2 id="sponsorship-title">Partner with <span class="accent">the Sol&nbsp;Devils</span></h2>
         </div>
-        <a class="btn btn-primary" href="https://www.thesoldevils.org/sponsorship" target="_blank" rel="noopener noreferrer">Sponsorship opportunities<span class="sr-only"> (opens in a new tab)</span></a>
+        <div class="sponsor-action">
+          <p>Learn about sponsorship opportunities that support our tailgate tradition and club activities.</p>
+          <a class="btn btn-primary" href="https://www.thesoldevils.org/sponsorship" target="_blank" rel="noopener noreferrer">Sponsorship opportunities<span class="sr-only"> (opens in a new tab)</span></a>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ============ Membership ============ -->
-  <section class="section membership" id="membership" aria-labelledby="membership-title">
-    <div class="container membership-grid">
-      <div class="reveal">
-        <p class="kicker">Membership</p>
-        <h2 class="section-heading" id="membership-title">A close-knit club with a shared purpose</h2>
-        <p>The Sol Devils are an independent booster organization with their own board, bylaws, and budget. Membership is intentionally limited to preserve the personal nature of the group.</p>
-        <p>Prospective members are introduced and sponsored by existing members, with applications considered through the club’s review process.</p>
-      </div>
-      <div class="member-criteria reveal">
-        <h3>Membership considerations</h3>
-        <ul>
-          <li>ASU football season ticket holder</li>
-          <li>Significant supporter of Sun Devil Athletics</li>
-          <li>Sponsored by two active Sol Devils</li>
-          <li>Approval through the club’s application process</li>
-        </ul>
+  <!-- ============ Membership: an invitation card ============ -->
+  <section class="section membership on-dark" id="membership" aria-labelledby="membership-title">
+    <div class="container">
+      <div class="invitation reveal">
+        <svg class="invitation-seal" aria-hidden="true" focusable="false"><use href="#seal"/></svg>
+        <div class="invitation-head">
+          <p class="kicker kicker-rule">Membership</p>
+          <h2 class="section-heading" id="membership-title">A close-knit club <span class="accent">with a shared purpose</span></h2>
+        </div>
+        <div class="invitation-body">
+          <div class="invitation-intro">
+            <p>The Sol Devils are an independent booster organization with their own board, bylaws, and budget. Membership is intentionally limited to preserve the personal nature of the group.</p>
+            <p>Prospective members are introduced and sponsored by existing members, with applications considered through the club’s review process.</p>
+          </div>
+          <div class="member-criteria">
+            <h3>Membership considerations</h3>
+            <ul role="list">
+              <li>ASU football season ticket holder</li>
+              <li>Significant supporter of Sun&nbsp;Devil Athletics</li>
+              <li>Sponsored by two active Sol Devils</li>
+              <li>Approval through the club’s application process</li>
+            </ul>
+          </div>
+        </div>
         <p class="note">Membership is capped at 90. Meeting the minimum criteria does not guarantee admission.</p>
       </div>
     </div>
   </section>
 </main>
 
-<footer class="footer">
-  <div class="container">
+<!-- ============ Footer: the sunset colophon ============ -->
+<footer class="footer on-dark">
+  <!-- The sunset: the club's name stands on the horizon and the sun sets behind "Sol". -->
+  <div class="footer-sky">
+    <div class="container footer-skyline">
+      <p class="footer-name">The <span class="sol">Sol<span class="sol-sun" aria-hidden="true"><svg class="sol-rays" focusable="false"><use href="#rays"/></svg></span></span> Devils</p>
+    </div>
+  </div>
+  <div class="container footer-inner">
     <div class="footer-grid">
-      <div class="footer-about">
-        <p class="footer-name">The Sol Devils</p>
-        <p>An independent athletics booster organization supporting Arizona State student-athletes and Sun Devil traditions since 1999.</p>
-      </div>
-      <div>
+      <p class="footer-about">An independent athletics booster organization supporting Arizona State <span class="nowrap">student-athletes</span> and Sun&nbsp;Devil traditions since 1999.</p>
+      <div class="footer-links">
         <h2 class="footer-heading">Stay Connected</h2>
-        <ul>
+        <ul role="list">
           <li><a href="https://thesoldevils.wildapricot.org/" target="_blank" rel="noopener noreferrer">Member Login<span class="sr-only"> (opens in a new tab)</span></a></li>
           <li><a href="https://www.instagram.com/thesoldevils/" target="_blank" rel="noopener noreferrer">Instagram<span class="sr-only"> (opens in a new tab)</span></a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© <span id="year">2026</span> The Sol Devils · Tempe, Arizona</span>
-      <span>An independent booster organization, not operated by Arizona State University.</span>
+      <p class="fine">© <span id="year">2026</span> The Sol Devils<span class="mid"> · </span>Tempe, Arizona</p>
+      <p class="fine fine-independent">An independent booster organization, not operated by Arizona State University.</p>
+      <a class="to-top" href="#top">Back to top</a>
     </div>
     <!-- DESIGN PREVIEW NOTES (not for public launch): the stadium, Pat Tillman statue, Camp Tontozona field,
          Sol Devils logo and Frasher's Smokehouse logo are remotely linked design references and need approved,
